@@ -6,8 +6,8 @@ import * as THREE from 'three'
 const Plane = () => {
   return (
     <RigidBody type="fixed">
-        <Box position={[0, 0, 0]} args={[15, 1, 15]}>
-        <meshStandardMaterial color={"lightgreen"} />
+        <Box position={[0, 0, 0]} args={[40, 1, 40]}>
+          <meshStandardMaterial color={"lightgreen"} />
         </Box>
     </RigidBody>
   );
