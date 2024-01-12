@@ -8,7 +8,8 @@ import { Controls } from "../App";
 
 import * as THREE from "three";
 
-export const Experience = () => {
+export const Experience = ({leftInfo, rightInfo}) => {
+  console.log('info', leftInfo, rightInfo)
   const [hover, setHover] = useState(false);
   const cube = useRef();
   const [start, setStart] = useState(false);
@@ -20,8 +21,8 @@ export const Experience = () => {
 
   const jump = () => {
     //   cube.current.applyImpulse({ x: 0, y: 10, z: 0 }, true);
-      rightBall.current.applyImpulse({ x: -10, y: 0, z: 0 }, true);
-      leftBall.current.applyImpulse({ x: 10, y: 0, z: 0 }, true);
+    leftBall.current.applyImpulse({ x: leftInfo.force, y: 0, z: 0 }, true);
+    rightBall.current.applyImpulse({ x: rightInfo.force, y: 0, z: 0 }, true);
   };
   const pushLeft = () => {
     console.log('left')
@@ -38,7 +39,6 @@ export const Experience = () => {
     (state) => state[Controls.forward]
   );
 
-  console.log('controls', Controls, leftPressed)
   const handleMovement = () => {
     if (!isOnFloor.current) {
       return;
@@ -94,9 +94,10 @@ export const Experience = () => {
 
   return (
     <>
+    
       <ambientLight intensity={0.5} />
-      <directionalLight position={[-10, 10, 0]} intensity={0.4} />
-      <OrbitControls />
+      <directionalLight position={[0, 20, 10]} intensity={1} />
+      {/* <OrbitControls /> */}
 
        {/* Wall Mesh */}
       <RigidBody
@@ -108,38 +109,16 @@ export const Experience = () => {
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
           args={[1, 5, 5]}
+          castShadow
+          receiveShadow
         >
           <meshStandardMaterial color={hover ? "hotpink" : "royalblue"} />
         </Box>
       </RigidBody> 
 
-      {/* <RigidBody
-        position={[-2.5, 1, 0]}
-        ref={cube}
-        colliders={"ball"}
-        onCollisionEnter={({ other }) => {
-          if (other.rigidBodyObject.name === "floor") {
-            isOnFloor.current = true;
-          }
-        }}
-        onCollisionExit={({ other }) => {
-          if (other.rigidBodyObject.name === "floor") {
-            isOnFloor.current = false;
-          }
-        }}
-      >
-        <Sphere
-          onPointerEnter={() => setHover(true)}
-          onPointerLeave={() => setHover(false)}
-        //   onClick={() => setStart(true)}
-        >
-          <meshStandardMaterial color={hover ? "hotpink" : "royalblue"} />
-        </Sphere>
-      </RigidBody> */}
-
       {/* Left Ball */}
       <RigidBody
-        position={[-5,5, 0]}
+        position={[-5,1.5, 0]}
         ref={leftBall}
         colliders={"ball"}
         onCollisionEnter={({ other }) => {
@@ -155,15 +134,17 @@ export const Experience = () => {
         // onContactForce={(payload) => {
         //     console.log(`The total force generated was: ${payload.totalForceMagnitude}`);
         // }}
+        type="dynamic"
         restitution={1}
       >
         <Sphere
           onPointerEnter={() => setHover(true)}
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
-        //   args={[1, 32, 32]}
+          args={leftInfo.size}
           scale={(1, 1, 1)} //Size
-          density={5}
+          density={1}
+          castShadow
         >
           <meshStandardMaterial  color={hover ? "hotpink" : "royalblue"} />
         </Sphere>
@@ -171,7 +152,7 @@ export const Experience = () => {
       
       {/* Right Ball */}
       <RigidBody
-        position={[5,5, 0]}
+        position={[5,1.5, 0]}
         ref={rightBall}
         colliders={"ball"}
         onCollisionEnter={({ other }) => {
@@ -194,9 +175,10 @@ export const Experience = () => {
           onPointerEnter={() => setHover(true)}
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
-          // args={[1, 32, 32]}
-          scale={(1, 1, 1)} //Size
+          args={rightInfo.size}
+          // scale={(1, 3, 2)} //Size
           density={1}
+          castShadow
         >
           <meshStandardMaterial  color={hover ? "green" : "red"} />
         </Sphere>
@@ -206,7 +188,7 @@ export const Experience = () => {
         {/* Wall Mesh */}
       <RigidBody
         type="fixed"
-        position={[10, 2.5, 0]}
+        position={[10, 2, 0]}
       >
         <Box
           onPointerEnter={() => setHover(true)}
@@ -229,7 +211,7 @@ export const Experience = () => {
 
 
       <RigidBody type="fixed" name="floor">
-        <Box position={[0, 0, 0]} args={[20, 1, 20]}>
+        <Box position={[0, 0, 0]} args={[20, 1, 20]} receiveShadow>
           <meshStandardMaterial color="springgreen" />
         </Box>
       </RigidBody>
