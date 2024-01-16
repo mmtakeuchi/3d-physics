@@ -15,8 +15,10 @@ export const Controls = {
 };
 
 function App() {
-  const [leftInfo, setLeftInfo] = useState({size: [1, 20, 20], force: 5})
-  const [rightInfo, setRightInfo] = useState({size: [1, 20, 20], force: -5})
+  const [info, setInfo] = useState({
+    left: {size: 1, force: 5},
+    right: {size: 1, force: -5}
+  })
 
   const map = useMemo(
     () => [
@@ -32,7 +34,7 @@ function App() {
   return (
   <>
     <div style={{backgroundColor: "#ececec"}}>
-      <InfoSection leftInfo={leftInfo} rightInfo={rightInfo} setLeftInfo={setLeftInfo} setRightInfo={setRightInfo}/>
+      <InfoSection info={info} setInfo={setInfo}/>
     </div>
 
     <KeyboardControls map={map}>
@@ -40,7 +42,7 @@ function App() {
         <color attach="background" args={["#ececec"]} />
         <Suspense>
           <Physics debug>
-            <Experience leftInfo={leftInfo} rightInfo={rightInfo}/>
+            <Experience info={info}/>
           </Physics>
         </Suspense>
       </Canvas>

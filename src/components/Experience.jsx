@@ -8,8 +8,8 @@ import { Controls } from "../App";
 
 import * as THREE from "three";
 
-export const Experience = ({leftInfo, rightInfo}) => {
-  console.log('info', leftInfo, rightInfo)
+export const Experience = ({info}) => {
+  console.log('info', info)
   const [hover, setHover] = useState(false);
   const cube = useRef();
   const [start, setStart] = useState(false);
@@ -21,8 +21,8 @@ export const Experience = ({leftInfo, rightInfo}) => {
 
   const jump = () => {
     //   cube.current.applyImpulse({ x: 0, y: 10, z: 0 }, true);
-    leftBall.current.applyImpulse({ x: leftInfo.force, y: 0, z: 0 }, true);
-    rightBall.current.applyImpulse({ x: rightInfo.force, y: 0, z: 0 }, true);
+    leftBall.current.applyImpulse({ x: info.left.force, y: 0, z: 0 }, true);
+    rightBall.current.applyImpulse({ x: info.right.force, y: 0, z: 0 }, true);
   };
   const pushLeft = () => {
     console.log('left')
@@ -141,7 +141,7 @@ export const Experience = ({leftInfo, rightInfo}) => {
           onPointerEnter={() => setHover(true)}
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
-          args={leftInfo.size}
+          args={[info.left.size, 20, 20]}
           scale={(1, 1, 1)} //Size
           density={1}
           castShadow
@@ -175,7 +175,7 @@ export const Experience = ({leftInfo, rightInfo}) => {
           onPointerEnter={() => setHover(true)}
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
-          args={rightInfo.size}
+          args={[info.right.size, 20, 20]}
           // scale={(1, 3, 2)} //Size
           density={1}
           castShadow
