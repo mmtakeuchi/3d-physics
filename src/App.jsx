@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { KeyboardControls, Html } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
@@ -16,9 +16,11 @@ export const Controls = {
 
 function App() {
   const [info, setInfo] = useState({
-    left: {size: 1, force: 5},
-    right: {size: 1, force: -5}
+    left: {size: 2, force: 5},
+    right: {size: 1, force: 20}
   })
+  const leftBall = useRef()
+  const rightBall = useRef()
 
   const map = useMemo(
     () => [
@@ -31,18 +33,25 @@ function App() {
     []
   );
 
+  const handleStart = (e) => {
+    leftBall?.current.applyImpulse({ x: info.left.force, y: 0, z: 0 }, true);
+    rightBall?.current.applyImpulse({ x: -info.right.force, y: 0, z: 0 }, true);
+  }
+
+
   return (
   <>
     <div style={{backgroundColor: "#ececec"}}>
       <InfoSection info={info} setInfo={setInfo}/>
+      <button className="startBtn" type="button" onClick={handleStart}>Start</button>
     </div>
 
     <KeyboardControls map={map}>
-      <Canvas shadows camera={{ position: [0, 15, 20], fov: 60 }}>
+      <Canvas shadows camera={{ position: [0, 15, 20], fov: 70 }}>
         <color attach="background" args={["#ececec"]} />
         <Suspense>
           <Physics debug>
-            <Experience info={info}/>
+            <Experience info={info} leftBall={leftBall} rightBall={rightBall}/>
           </Physics>
         </Suspense>
       </Canvas>

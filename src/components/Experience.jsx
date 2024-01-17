@@ -3,26 +3,26 @@ import { useFrame } from "@react-three/fiber";
 import { RigidBody, quat, BallCollider } from "@react-three/rapier";
 import blueCar from '../assets/blue_car.jpg'
 import redCar from '../assets/red_car.jpg'
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Controls } from "../App";
 
 import * as THREE from "three";
 
-export const Experience = ({info}) => {
+export const Experience = ({info, leftBall, rightBall}) => {
   console.log('info', info)
   const [hover, setHover] = useState(false);
   const cube = useRef();
   const [start, setStart] = useState(false);
   const kicker = useRef();
-  const leftBall = useRef();
-  const rightBall = useRef()
+  // const leftBall = useRef();
+  // const rightBall = useRef()
   const blue = useTexture(blueCar)
   const red = useTexture(redCar)
 
   const jump = () => {
     //   cube.current.applyImpulse({ x: 0, y: 10, z: 0 }, true);
-    leftBall.current.applyImpulse({ x: info.left.force, y: 0, z: 0 }, true);
-    rightBall.current.applyImpulse({ x: info.right.force, y: 0, z: 0 }, true);
+    leftBall?.current.applyImpulse({ x: info.left.force, y: 0, z: 0 }, true);
+    rightBall?.current.applyImpulse({ x: -info.right.force, y: 0, z: 0 }, true);
   };
   const pushLeft = () => {
     console.log('left')
@@ -92,9 +92,15 @@ export const Experience = ({info}) => {
 
   const isOnFloor = useRef(true);
 
+  // useEffect(() => {
+  //   console.log('left', leftBall?.current)
+
+  //   leftBall.current?.colliderSet?.map?.size = info.left.size
+  // })
+
+
   return (
     <>
-    
       <ambientLight intensity={0.5} />
       <directionalLight position={[0, 20, 10]} intensity={1} />
       {/* <OrbitControls /> */}
@@ -118,7 +124,6 @@ export const Experience = ({info}) => {
 
       {/* Left Ball */}
       <RigidBody
-        position={[-5,1.5, 0]}
         ref={leftBall}
         colliders={"ball"}
         onCollisionEnter={({ other }) => {
@@ -128,21 +133,22 @@ export const Experience = ({info}) => {
         }}
         onCollisionExit={({ other }) => {
           if (other.rigidBodyObject.name === "floor") {
-              isOnFloor.current = false;
-            }
+            isOnFloor.current = false;
+          }
         }}
         // onContactForce={(payload) => {
-        //     console.log(`The total force generated was: ${payload.totalForceMagnitude}`);
-        // }}
-        type="dynamic"
-        restitution={1}
-      >
+          //     console.log(`The total force generated was: ${payload.totalForceMagnitude}`);
+          // }}
+          type="dynamic"
+          restitution={1}
+          >
         <Sphere
+          position={[-5,5, 0]}
           onPointerEnter={() => setHover(true)}
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
-          args={[info.left.size, 20, 20]}
-          scale={(1, 1, 1)} //Size
+          args={[info.left.size]} //Size
+          // scale={[info.left.size, 1, 1]}
           density={1}
           castShadow
         >
@@ -171,15 +177,16 @@ export const Experience = ({info}) => {
         type="dynamic"
         restitution={1}
       >
-        <Sphere
+       <Sphere
           onPointerEnter={() => setHover(true)}
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
-          args={[info.right.size, 20, 20]}
+          args={[info.right.size, 32, 32]}
           // scale={(1, 3, 2)} //Size
           density={1}
           castShadow
         >
+          {/* <BallCollider args={[info.right.size]} color={hover ? "green" : "red"} /> */}
           <meshStandardMaterial  color={hover ? "green" : "red"} />
         </Sphere>
       </RigidBody>
