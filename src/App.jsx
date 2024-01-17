@@ -16,8 +16,8 @@ export const Controls = {
 
 function App() {
   const [info, setInfo] = useState({
-    left: {size: 2, force: 5},
-    right: {size: 1, force: 20}
+    left: {size: 2, force: 10},
+    right: {size: 1, force: 10}
   })
   const leftBall = useRef()
   const rightBall = useRef()
@@ -47,7 +47,7 @@ function App() {
     </div>
 
     <KeyboardControls map={map}>
-      <Canvas shadows camera={{ position: [0, 15, 20], fov: 70 }}>
+      <Canvas shadows camera={{ position: [0, 15, 20], fov: 60 }}>
         <color attach="background" args={["#ececec"]} />
         <Suspense>
           <Physics debug>

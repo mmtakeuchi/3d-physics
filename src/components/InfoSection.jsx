@@ -29,14 +29,14 @@ const InfoSection = ({info, setInfo}) => {
                 <label htmlFor="size">Size</label>
                 <input name="size" value={ballValues.left.size} min="1" max="5" type="number" onChange={(e) => handleChange(e, "left")}/>
                 <label htmlFor="force">Force</label>
-                <input name="force" value={ballValues.left.force} min="1" max="10" type="number" onChange={(e) => handleChange(e,"left")}/>
+                <input name="force" value={ballValues.left.force} min="1" max="100" type="number" onChange={(e) => handleChange(e,"left")}/>
             </div>
             <div className="rightSide">
                 <h3>Right Ball</h3>
                 <label htmlFor="size">Size</label>
                 <input name="size" value={ballValues.right.size}  min="1" max="5" type="number" onChange={(e) => handleChange(e, "right")}/>
                 <label htmlFor="force">Force</label>
-                <input name="force" value={ballValues.right.force}  min="1" max="10" type="number" onChange={(e) => handleChange(e,"right")}/>
+                <input name="force" value={ballValues.right.force}  min="1" max="100" type="number" onChange={(e) => handleChange(e,"right")}/>
             </div>
         </div>
         <button type="button" onClick={handleSubmit}>Submit</button>

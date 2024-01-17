@@ -1,4 +1,4 @@
-import { Box, OrbitControls, useKeyboardControls, Sphere, useTexture } from "@react-three/drei";
+import { Box, OrbitControls, useKeyboardControls, Sphere, useTexture, Html } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { RigidBody, quat, BallCollider } from "@react-three/rapier";
 import blueCar from '../assets/blue_car.jpg'
@@ -9,7 +9,7 @@ import { Controls } from "../App";
 import * as THREE from "three";
 
 export const Experience = ({info, leftBall, rightBall}) => {
-  console.log('info', info)
+  // console.log('info', info)
   const [hover, setHover] = useState(false);
   const cube = useRef();
   const [start, setStart] = useState(false);
@@ -76,17 +76,6 @@ export const Experience = ({info, leftBall, rightBall}) => {
 
     handleMovement();
 
-//     if (!start) {
-//       return;
-//     }
-//     const curRotation = quat(kicker.current.rotation());
-//     const incrementRotation = new THREE.Quaternion().setFromAxisAngle(
-//       new THREE.Vector3(0, 1, 0),
-//       delta * speed.current
-//     );
-//     curRotation.multiply(incrementRotation);
-//     kicker.current.setNextKinematicRotation(curRotation);
-
     speed.current += delta;
   });
 
@@ -102,13 +91,16 @@ export const Experience = ({info, leftBall, rightBall}) => {
   return (
     <>
       <ambientLight intensity={0.5} />
-      <directionalLight position={[0, 20, 10]} intensity={1} />
+      <directionalLight position={[0, 10, 10]} intensity={1} shadow-camera-left={-20} shadow-camera-right={20} castShadow/>
       {/* <OrbitControls /> */}
+
+      <Html center style={{top: '-300px'}}><button onClick={jump}>Start</button></Html>
 
        {/* Wall Mesh */}
       <RigidBody
         type="fixed"
         position={[-10, 2.5, 0]}
+        ccd
       >
         <Box
           onPointerEnter={() => setHover(true)}
@@ -136,14 +128,16 @@ export const Experience = ({info, leftBall, rightBall}) => {
             isOnFloor.current = false;
           }
         }}
+        key={`leftBall-${info.left.size}`}
         // onContactForce={(payload) => {
           //     console.log(`The total force generated was: ${payload.totalForceMagnitude}`);
           // }}
           type="dynamic"
           restitution={1}
+          ccd
           >
         <Sphere
-          position={[-5,5, 0]}
+          position={[-5,1, 0]}
           onPointerEnter={() => setHover(true)}
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
@@ -151,6 +145,7 @@ export const Experience = ({info, leftBall, rightBall}) => {
           // scale={[info.left.size, 1, 1]}
           density={1}
           castShadow
+          receiveShadow
         >
           <meshStandardMaterial  color={hover ? "hotpink" : "royalblue"} />
         </Sphere>
@@ -158,7 +153,7 @@ export const Experience = ({info, leftBall, rightBall}) => {
       
       {/* Right Ball */}
       <RigidBody
-        position={[5,1.5, 0]}
+        position={[5,1, 0]}
         ref={rightBall}
         colliders={"ball"}
         onCollisionEnter={({ other }) => {
@@ -174,8 +169,10 @@ export const Experience = ({info, leftBall, rightBall}) => {
         // onContactForce={(payload) => {
         //     console.log(`The total force generated was: ${payload.totalForceMagnitude}`);
         // }}
+        key={`rightBall-${info.right.size}`}
         type="dynamic"
         restitution={1}
+        ccd
       >
        <Sphere
           onPointerEnter={() => setHover(true)}
@@ -185,6 +182,7 @@ export const Experience = ({info, leftBall, rightBall}) => {
           // scale={(1, 3, 2)} //Size
           density={1}
           castShadow
+          receiveShadow
         >
           {/* <BallCollider args={[info.right.size]} color={hover ? "green" : "red"} /> */}
           <meshStandardMaterial  color={hover ? "green" : "red"} />
@@ -196,12 +194,15 @@ export const Experience = ({info, leftBall, rightBall}) => {
       <RigidBody
         type="fixed"
         position={[10, 2, 0]}
+        ccd
       >
         <Box
           onPointerEnter={() => setHover(true)}
           onPointerLeave={() => setHover(false)}
           onClick={() => setStart(true)}
           args={[1, 5, 5]}
+          castShadow
+          receiveShadow
         >
           <meshStandardMaterial color={hover ? "hotpink" : "royalblue"} />
         </Box>
