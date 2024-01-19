@@ -1,47 +1,48 @@
 canvas {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
 
 .info-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .info-inputs {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
-.leftSide, .rightSide {
-    display: flex;
-    flex-direction: column;
+.leftSide,
+.rightSide {
+  display: flex;
+  flex-direction: column;
 }
 
-.info-inputs h3{
-    margin: 0.5rem 0;
-    text-align: center;
+.info-inputs h3 {
+  margin: 0.5rem 0;
+  text-align: center;
 }
 
 .info-container button {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .startBtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width: 100%;
-    color: black;
-    border: 1px solid black;
-    /* position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  color: black;
+  border: 1px solid black;
+  /* position: absolute;
     top: 50px;
     left: 100px; */
 }
